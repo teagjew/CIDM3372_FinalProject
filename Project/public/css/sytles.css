@@ -10,7 +10,7 @@ body {
 header,
 aside,
 footer {
-    background-color: lightblue;
+    background-color: rgb(221, 160, 221, 0.5);
     padding: 1em;
 }
 
@@ -64,7 +64,7 @@ header, footer {
 }
 
 .weather-element {
-    color: darkslategrey;
+    color: white;
 }
 
 .lifr-flight-category {

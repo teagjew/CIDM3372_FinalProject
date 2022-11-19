@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+    <style>
+        body {
+            background-image: url('img/SkyBackground.jpg');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+    </style> 
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Final Project Example</title>
@@ -42,16 +52,16 @@
 </head>
 <body>
     <div class="w3-container">
-        <div class="flex-container">
-            <h1>Map and Weather</h1>
-            <p>Showing leaflet, fetch, grid, flex, and W3CSS</p>
+        <div class="flex-container" style="background-color: rgb(221, 160, 221);">
+            <h1 style="font-family: Lucida Handwriting; text-decoration: underline; color:white;">Map and Weather</h1>
+            <p style="color:white;"">Showing leaflet, fetch, grid, flex, and W3CSS</p>
         </div>
         <div class="grid-container">
             <header>
                 <h3 id="headertext">NOAA Weather</h3>
             </header>
             <aside>
-                <div class="w3-container w3-teal">
+                <div class="w3-container w3-indigo">
                     <h3>Weather Input</h3>
                 </div>
                 <div id="alert_panel" class="w3-panel w3-hide w3-red">
@@ -65,12 +75,14 @@
                        placeholder="METAR Station ID..." 
                        type="text" >
                 <button onclick="getMETAR()" class="w3-button w3-block w3-dark-grey">Show METAR</button>
+                <div id="latitude" class="weather-element"></div>                
+                <div id="longitude" class="weather-element"></div>
             </aside>
             <div id="mapid">
                 <!-- map goes in here -->
             </div>                    
             <aside> 
-                <div class="w3-container w3-teal">
+                <div class="w3-container w3-indigo">
                     <h3>Weather Output</h3>
                 </div>
                 <div id="station_id" class="weather-element"></div>
@@ -87,15 +99,16 @@
                 <div id="weather_icon" class="weather-element"></div>
             </aside>
             <footer class="w3-container">
-                <div class="w3-container w3-teal">
+                <div class="w3-container w3-indigo">
                     <h3>Recent Stations</h3>
                 </div>
-                <table id="metar_table" class="w3-table w3-border">
-                    <tr id="header_row">
+                <table id="metar_table" class="w3-table w3-border w3-hoverable">
+                    <tr id="header_row" class="w3-light-grey">
                         <th>Station</th>
                         <th>Lat</th>
                         <th>Lon</th>
                         <th>METAR</th>
+                        <th>Search</th>
                     </tr>
                 </table>
             </footer>

@@ -108,16 +108,16 @@ const updateWeatherOutput = async (json, site) => {
     // <div id="latitude" class="weather-element"></div>
     //latitude
     const latitude = metar.latitude[0]
-    // const latitude_output = `<strong>LAT:</strong> ${latitude}`
-    // const latitude_element = document.querySelector('#latitude')
-    // latitude_element.innerHTML = latitude_output
+    const latitude_output = `<strong>LAT:</strong> ${latitude}`
+    const latitude_element = document.querySelector('#latitude')
+    latitude_element.innerHTML = latitude_output
 
     // <div id="longitude" class="weather-element"></div>
     //longitude            
     const longitude = metar.longitude[0]
-    // const longitude_output = `<strong>LON:</strong> ${longitude}`
-    // const longitude_element = document.querySelector('#longitude')
-    // longitude_element.innerHTML = longitude_output
+    const longitude_output = `<strong>LON:</strong> ${longitude}`
+    const longitude_element = document.querySelector('#longitude')
+    longitude_element.innerHTML = longitude_output
 
     // <div id="temp" class="weather-element"></div>    
     //temp
@@ -259,7 +259,10 @@ const updateWeatherOutput = async (json, site) => {
         longitudeCell.innerHTML = `${longitude}`
 
         var rawMETARCell = row.insertCell(3)
-        rawMETARCell.innerHTML = `${raw_metar}`        
+        rawMETARCell.innerHTML = `${raw_metar}`
+        
+        var refreshButtonCell = row.insertCell(4)
+        refreshButtonCell.innerHTML = `<button class="w3-button w3-dark-grey" onclick="updateMETAR('${station_id}')">Show METAR</button>` 
 
     } else {
 
@@ -276,6 +279,9 @@ const updateWeatherOutput = async (json, site) => {
 
         var rawMETARCell = row.insertCell(3)
         rawMETARCell.innerHTML = `${raw_metar}`
+
+        var refreshButtonCell = row.insertCell(4)
+        refreshButtonCell.innerHTML = `<button class="w3-button w3-dark-grey" onclick="updateMETAR('${station_id}')">Show METAR</button>` 
     }
 }
 
@@ -837,3 +843,49 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })    
 });
+
+const updateMETAR = (metarCode) => {
+
+    // const stationElement = document.querySelector('#updateMetar')
+    // const station = stationElement.value;
+    // console.log(`entered: ${station}`)
+    const alertPanelElement = document.querySelector('#alert_panel')
+
+    validateADDSStation(metarCode)
+        .then(response => response.json())
+        .then(json => {
+
+            let icao = null
+            let site = null
+            try{
+                icao = json.response.data[0].Station[0].station_id[0]
+                site = json.response.data[0].Station[0].site[0]
+            } catch(err) {
+                alertPanelElement.classList.remove('w3-hide')
+                alertPanelElement.classList.add('w3-show')
+                stationElement.focus()
+                stationElement.select()
+                console.log("BAD CODE")
+            }
+
+            console.log(`RETURN VALUE FROM VALIDATE: ${icao}`)
+            if( metarCode !== icao){
+                console.log(`ICAO ${icao} not found`)
+                alertPanelElement.classList.remove('w3-hide')
+                alertPanelElement.classList.add('w3-show')
+            }
+            else {
+                alertPanelElement.classList.remove('w3-show')
+                alertPanelElement.classList.add('w3-hide')
+
+                fetch(`${ADDS_METAR_URL}${metarCode}`)
+                    .then(response => response.json())
+                    .then(json => {
+
+                        // printValues(json)
+                        updateWeatherOutput(json, site)
+                        
+                })
+            }
+        })
+}
